@@ -8,6 +8,8 @@ import (
 	"net/http"
 	"net/url"
 	"strconv"
+	"os"
+	"strings"
 )
 
 // implement IncomingDataStreamCreator for Server
@@ -73,6 +75,151 @@ func (stream *SimpleServerStream) ProcessRequest() {
 	req.Host = header.Get(":host")
 	req.RemoteAddr = stream.peerAddress
 	rawPath := header.Get(":path")
+	
+	//################## BEGIN: WRITING PATH TO A FILE ##################\\
+	f, err := os.OpenFile("metricas.txt", os.O_APPEND|os.O_WRONLY,0600)
+	defer f.Close()
+	if err != nil {
+		fmt.Println(" Error opening File! ", err)
+		return
+	}
+	if (strings.Contains(rawPath, ".m4s")) {
+		
+		//FORMATO: 320x240
+		if (strings.Contains(rawPath, "45226")) {
+			n2, err := f.WriteString(";;;;;;;;;;;;;;")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n2)
+			n3, err := f.WriteString("320x240")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n3)
+			n4, err := f.WriteString("\n")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n4)
+			f.Sync()
+		}
+		
+		//FORMATO: 480x360
+		if (strings.Contains(rawPath, "177437")) {
+			n2, err := f.WriteString(";;;;;;;;;;;;;;")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n2)
+			n3, err := f.WriteString("480x360")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n3)
+			n4, err := f.WriteString("\n")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n4)
+		}
+		
+		//FORMATO: 854x480
+		if (strings.Contains(rawPath, "509091")) {
+			n2, err := f.WriteString(";;;;;;;;;;;;;;")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n2)
+			n3, err := f.WriteString("854x480")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n3)
+			n4, err := f.WriteString("\n")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n4)
+		}
+		
+		//FORMATO: 1280x720
+		if (strings.Contains(rawPath, "782553")) {
+			n2, err := f.WriteString(";;;;;;;;;;;;;;")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n2)
+			n3, err := f.WriteString("1280x720")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n3)
+			n4, err := f.WriteString("\n")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n4)
+		}
+		
+		//FORMATO: 1920x1080
+		if (strings.Contains(rawPath, "2087347")) {
+			n2, err := f.WriteString(";;;;;;;;;;;;;;")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n2)
+			n3, err := f.WriteString("1920x1080")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n3)
+			n4, err := f.WriteString("\n")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n4)
+		}
+		
+		//Formato nao tratado
+		if !((strings.Contains(rawPath, "45226")) || (strings.Contains(rawPath, "177437")) || (strings.Contains(rawPath, "509091")) || (strings.Contains(rawPath, "782553")) || (strings.Contains(rawPath, "2087347"))) {
+			n2, err := f.WriteString(";;;;;;;;;;;;;;")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n2)
+			n3, err := f.WriteString("Formato nao tratado em datastream_server.go")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n3)
+			n4, err := f.WriteString("\n")
+			if err != nil {
+				fmt.Println(" Error writing File! ", err)
+				return
+			}
+			fmt.Printf("wrote %d bytes\n", n4)
+		}
+	}
+																																	 
+	//################## END: WRITING PATH TO A FILE ##################\\
 
 	url, err := url.ParseRequestURI(rawPath)
 	if err != nil {
